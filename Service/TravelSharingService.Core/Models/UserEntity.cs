@@ -6,4 +6,5 @@ public class UserEntity
     public string Email {get;set;} = string.Empty;
     public string PasswordHash {get;set;} = string.Empty;
     public List<TripParticipantEntity> TripParticipants { get; set; } = new();
+    public List<SpendingEntity> CreatedSpendings{ get; set; } = new();
 }
