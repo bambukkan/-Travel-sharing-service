@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-public class TripRepository(TravelSharingDbContext dbContext) : ITripRepository
+public class TripRepository(TravelSharingDbContext context) : ITripRepository
 {
     public Task<List<TripEntity>> GetByUserId(Guid userId)
     {
-        return dbContext.Trips
+        return context.Trips
             .AsNoTracking()
             .Where(t => t.Participants.Any(p => p.UserId == userId))
             .Include(t => t.TripLocations)
@@ -15,7 +15,7 @@ public class TripRepository(TravelSharingDbContext dbContext) : ITripRepository
 
     public Task<TripEntity?> GetById(Guid tripId)
     {
-        return dbContext.Trips
+        return context.Trips
             .Include(t => t.TripLocations)
             .Include(t => t.Participants)
                 .ThenInclude(p => p.User)
@@ -28,7 +28,7 @@ public class TripRepository(TravelSharingDbContext dbContext) : ITripRepository
 
     public Task<List<UserEntity>> GetUsersByTripId(Guid tripId)
     {
-        return dbContext.TripParticipants
+        return context.TripParticipants
             .AsNoTracking()
             .Where(p => p.TripId == tripId)
             .Select(p => p.User!)
@@ -37,26 +37,26 @@ public class TripRepository(TravelSharingDbContext dbContext) : ITripRepository
 
     public async Task Add(TripEntity trip)
     {
-        await dbContext.Trips.AddAsync(trip);
-        await dbContext.SaveChangesAsync();
+        await context.Trips.AddAsync(trip);
+        await context.SaveChangesAsync();
     }
 
     public async Task Update(TripEntity trip)
     {
-        dbContext.Trips.Update(trip);
-        await dbContext.SaveChangesAsync();
+        context.Trips.Update(trip);
+        await context.SaveChangesAsync();
     }
 
     public async Task Delete(Guid tripId)
     {
-        var trip = await dbContext.Trips.FirstOrDefaultAsync(t => t.Id == tripId);
+        var trip = await context.Trips.FirstOrDefaultAsync(t => t.Id == tripId);
         if (trip is null)
         {
             return;
         }
 
-        dbContext.Trips.Remove(trip);
-        await dbContext.SaveChangesAsync();
+        context.Trips.Remove(trip);
+        await context.SaveChangesAsync();
     }
 }
 

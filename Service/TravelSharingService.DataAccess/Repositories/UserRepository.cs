@@ -1,31 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-public class UserRepository(TravelSharingDbContext dbContext) : IUserRepository
+public class UserRepository(TravelSharingDbContext context) : IUserRepository
 {
     public Task<List<UserEntity>> GetAll()
     {
-        return dbContext.Users
+        return context.Users
             .AsNoTracking()
             .ToListAsync();
     }
 
     public Task<UserEntity?> GetById(Guid userId)
     {
-        return dbContext.Users
+        return context.Users
             .Include(u => u.TripParticipants)
             .FirstOrDefaultAsync(u => u.Id == userId);
     }
 
     public Task<UserEntity?> GetByEmail(string email)
     {
-        return dbContext.Users
+        return context.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public Task<List<UserEntity>> GetByTripId(Guid tripId)
     {
-        return dbContext.TripParticipants
+        return context.TripParticipants
             .AsNoTracking()
             .Where(p => p.TripId == tripId)
             .Select(p => p.User!)
@@ -34,26 +34,26 @@ public class UserRepository(TravelSharingDbContext dbContext) : IUserRepository
 
     public async Task Add(UserEntity user)
     {
-        await dbContext.Users.AddAsync(user);
-        await dbContext.SaveChangesAsync();
+        await context.Users.AddAsync(user);
+        await context.SaveChangesAsync();
     }
 
     public async Task Update(UserEntity user)
     {
-        dbContext.Users.Update(user);
-        await dbContext.SaveChangesAsync();
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
     }
 
     public async Task Delete(Guid userId)
     {
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user is null)
         {
             return;
         }
 
-        dbContext.Users.Remove(user);
-        await dbContext.SaveChangesAsync();
+        context.Users.Remove(user);
+        await context.SaveChangesAsync();
     }
 }
 

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-public class SpendingRepository(TravelSharingDbContext dbContext) : ISpendingRepository
+public class SpendingRepository(TravelSharingDbContext context) : ISpendingRepository
 {
     public Task<List<SpendingEntity>> GetByTripId(Guid tripId)
     {
-        return dbContext.Spendings
+        return context.Spendings
             .AsNoTracking()
             .Where(s => s.TripId == tripId)
             .Include(s => s.CreatedByUser)
@@ -17,7 +17,7 @@ public class SpendingRepository(TravelSharingDbContext dbContext) : ISpendingRep
 
     public Task<SpendingEntity?> GetById(Guid spendingId)
     {
-        return dbContext.Spendings
+        return context.Spendings
             .Include(s => s.CreatedByUser)
             .Include(s => s.Payments)
                 .ThenInclude(p => p.User)
@@ -28,26 +28,26 @@ public class SpendingRepository(TravelSharingDbContext dbContext) : ISpendingRep
 
     public async Task Add(SpendingEntity spending)
     {
-        await dbContext.Spendings.AddAsync(spending);
-        await dbContext.SaveChangesAsync();
+        await context.Spendings.AddAsync(spending);
+        await context.SaveChangesAsync();
     }
 
     public async Task Update(SpendingEntity spending)
     {
-        dbContext.Spendings.Update(spending);
-        await dbContext.SaveChangesAsync();
+        context.Spendings.Update(spending);
+        await context.SaveChangesAsync();
     }
 
     public async Task Delete(Guid spendingId)
     {
-        var spending = await dbContext.Spendings.FirstOrDefaultAsync(s => s.Id == spendingId);
+        var spending = await context.Spendings.FirstOrDefaultAsync(s => s.Id == spendingId);
         if (spending is null)
         {
             return;
         }
 
-        dbContext.Spendings.Remove(spending);
-        await dbContext.SaveChangesAsync();
+        context.Spendings.Remove(spending);
+        await context.SaveChangesAsync();
     }
 }
 
