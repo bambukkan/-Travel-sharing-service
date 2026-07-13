@@ -15,14 +15,37 @@
         return tripRepository.GetUsersByTripId(tripId);
     }
 
-    public Task Add(TripEntity trip)
+    public Task Add(Guid id, string name, DateTime startTime, DateTime endTime, List<TripLocation> tripLocations, List<TripParticipantEntity> participants, decimal overallBudget)
     {
-        return tripRepository.Add(trip);
+        var tripEntity = new TripEntity
+        {
+            Id = id,
+            Name = name,
+            StartTime = startTime,
+            EndTime = endTime,
+            TripLocations = tripLocations,
+            Participants = participants,
+            OverallBudget = overallBudget
+        };
+
+        return tripRepository.Add(tripEntity);
     }
 
-    public Task Update(TripEntity trip)
+    public Task Update(Guid id, string name, DateTime startTime, DateTime endTime, List<TripLocation> tripLocations, List<TripParticipantEntity> participants, decimal overallBudget, List<SpendingEntity> spendings)
     {
-        return tripRepository.Update(trip);
+        var tripEntity = new TripEntity
+        {
+            Id = id,
+            Name = name,
+            StartTime = startTime,
+            EndTime = endTime,
+            TripLocations = tripLocations,
+            Participants = participants,
+            OverallBudget = overallBudget,
+            Spendings = spendings
+        };
+
+        return tripRepository.Update(tripEntity);
     }
 
     public Task Delete(Guid tripId)

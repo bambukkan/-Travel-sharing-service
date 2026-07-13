@@ -31,16 +31,16 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserEntity user)
+    public async Task<IActionResult> Add([FromBody] CreateUserRequest user)
     {
-        await userService.Add(user);
+        await userService.Add(user.Id, user.Name, user.Email, user.Password);
         return Ok();
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UserEntity user)
+    public async Task<IActionResult> Update([FromBody] UpdateUserRequest user)
     {
-        await userService.Update(user);
+        await userService.Update(user.Id, user.Name, user.Email, user.Password);
         return Ok();
     }
 

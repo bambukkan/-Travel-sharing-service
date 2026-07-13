@@ -10,14 +10,40 @@
         return spendingRepository.GetById(spendingId);
     }
 
-    public Task Add(SpendingEntity spending)
+    public Task Add(Guid id, Guid tripId, Guid createdByUserId, SpendingCategory category, string currency, decimal amount, string name, List<SpendingPaymentEntity> payments, List<SpendingShareEntity> shares)
     {
-        return spendingRepository.Add(spending);
+        var spendingEntity = new SpendingEntity
+        {
+            Id = id,
+            TripId = tripId,
+            CreatedByUserId = createdByUserId,
+            Category = category,
+            Currency = currency,
+            Amount = amount,
+            Name = name,
+            Payments = payments,
+            Shares = shares
+        };
+
+        return spendingRepository.Add(spendingEntity);
     }
 
-    public Task Update(SpendingEntity spending)
+    public Task Update(Guid id, Guid tripId, Guid createdByUserId, SpendingCategory category, string currency, decimal amount, string name, List<SpendingPaymentEntity> payments, List<SpendingShareEntity> shares)
     {
-        return spendingRepository.Update(spending);
+        var spendingEntity = new SpendingEntity
+        {
+            Id = id,
+            TripId = tripId,
+            CreatedByUserId = createdByUserId,
+            Category = category,
+            Currency = currency,
+            Amount = amount,
+            Name = name,
+            Payments = payments,
+            Shares = shares
+        };
+
+        return spendingRepository.Update(spendingEntity);
     }
 
     public Task Delete(Guid spendingId)

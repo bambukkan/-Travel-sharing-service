@@ -20,14 +20,30 @@
         return userRepository.GetByTripId(tripId);
     }
 
-    public Task Add(UserEntity user)
+    public Task Add(Guid id, string name, string email, string password)
     {
-        return userRepository.Add(user);
+        var userEntity = new UserEntity
+        {
+            Id = id,
+            Name = name,
+            Email = email,
+            PasswordHash = password
+        };
+
+        return userRepository.Add(userEntity);
     }
 
-    public Task Update(UserEntity user)
+    public Task Update(Guid id, string name, string email, string password)
     {
-        return userRepository.Update(user);
+        var userEntity = new UserEntity
+        {
+            Id = id,
+            Name = name,
+            Email = email,
+            PasswordHash = password
+        };
+
+        return userRepository.Update(userEntity);
     }
 
     public Task Delete(Guid userId)

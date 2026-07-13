@@ -24,16 +24,33 @@ public class TripsController(ITripService tripService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] TripEntity trip)
+    public async Task<IActionResult> Add([FromBody] CreateTripRequest trip)
     {
-        await tripService.Add(trip);
+        await tripService.Add(
+            trip.Id,
+            trip.Name,
+            trip.StartTime,
+            trip.EndTime,
+            trip.TripLocations,
+            trip.Participants,
+            trip.OverallBudget);
+
         return Ok();
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] TripEntity trip)
+    public async Task<IActionResult> Update([FromBody] UpdateTripRequest trip)
     {
-        await tripService.Update(trip);
+        await tripService.Update(
+            trip.Id,
+            trip.Name,
+            trip.StartTime,
+            trip.EndTime,
+            trip.TripLocations,
+            trip.Participants,
+            trip.OverallBudget,
+            trip.Spendings);
+
         return Ok();
     }
 

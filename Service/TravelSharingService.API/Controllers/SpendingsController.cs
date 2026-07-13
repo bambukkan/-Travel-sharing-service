@@ -18,16 +18,36 @@ public class SpendingsController(ISpendingService spendingService) : ControllerB
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] SpendingEntity spending)
+    public async Task<IActionResult> Add([FromBody] CreateSpendingRequest spending)
     {
-        await spendingService.Add(spending);
+        await spendingService.Add(
+            spending.Id,
+            spending.TripId,
+            spending.CreatedByUserId,
+            spending.Category,
+            spending.Currency,
+            spending.Amount,
+            spending.Name,
+            spending.Payments,
+            spending.Shares);
+
         return Ok();
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] SpendingEntity spending)
+    public async Task<IActionResult> Update([FromBody] UpdateSpendingRequest spending)
     {
-        await spendingService.Update(spending);
+        await spendingService.Update(
+            spending.Id,
+            spending.TripId,
+            spending.CreatedByUserId,
+            spending.Category,
+            spending.Currency,
+            spending.Amount,
+            spending.Name,
+            spending.Payments,
+            spending.Shares);
+
         return Ok();
     }
 

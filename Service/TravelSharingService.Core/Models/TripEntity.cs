@@ -7,7 +7,6 @@ public class TripEntity
     public List<TripLocation> TripLocations {get;set;} = new();
     public List<TripParticipantEntity> Participants { get; set; } = new();
     public decimal OverallBudget {get;set;}
-    public string Currency {get;set;} = string.Empty;
     public List<SpendingEntity> Spendings { get; set; } = new();
 
     // В поездке должны быть траты, а в тратах показывается кто кому должен
@@ -23,6 +22,8 @@ public class TripLocation
     public string City {get;set;} = string.Empty;
     public DateTime StartDate {get;set;}
     public DateTime EndDate {get;set;}
+    public string Currency {get;set;} = string.Empty;
+
 }
 
 public class TripParticipantEntity
